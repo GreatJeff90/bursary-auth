@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UniPort Bursary | Secure Authentication</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #00f7ff;
+            --secondary: #7b2cbf;
+            --dark: #0a0a16;
+            --darker: #050510;
+            --light: #e2f1f8;
+            --accent: #ff2a6d;
+            --card-bg: rgba(16, 18, 36, 0.7);
+            --success: #00ff9d;
+        }
+
+        body {
+            background-color: var(--darker);
+            color: var(--light);
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(123, 44, 191, 0.15) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(0, 247, 255, 0.1) 0%, transparent 20%);
+            padding: 20px;
+        }
+
+        /* Background Animation */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .floating-shape {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--primary), transparent);
+            opacity: 0.1;
+            animation: float 20s infinite linear;
+        }
+
+        .floating-shape:nth-child(1) {
+            width: 300px;
+            height: 300px;
+            top: 10%;
+            left: 5%;
+            animation-delay: 0s;
+        }
+
+        .floating-shape:nth-child(2) {
+            width: 200px;
+            height: 200px;
+            top: 60%;
+            left: 80%;
+            animation-delay: -5s;
+            background: radial-gradient(circle, var(--secondary), transparent);
+        }
+
+        .floating-shape:nth-child(3) {
+            width: 150px;
+            height: 150px;
+            top: 20%;
+            left: 70%;
+            animation-delay: -10s;
+            background: radial-gradient(circle, var(--accent), transparent);
+        }
+
+        @keyframes float {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            33% {
+                transform: translate(30px, -50px) rotate(120deg);
+            }
+            66% {
+                transform: translate(-20px, 20px) rotate(240deg);
+            }
+            100% {
+                transform: translate(0, 0) rotate(360deg);
+            }
+        }
+
+        /* Header */
+        .header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 10;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            color: var(--primary);
+            font-size: 1.8rem;
+        }
+
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .back-home {
+            color: var(--light);
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: color 0.3s;
+        }
+
+        .back-home:hover {
+            color: var(--primary);
+        }
+
+        /* Main Container */
+        .container {
+            display: flex;
+            max-width: 1200px;
+            width: 100%;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        /* Auth Card */
+        .auth-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2.5rem;
+            width: 100%;
+            max-width: 450px;
+            border: 1px solid rgba(0, 247, 255, 0.2);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+        }
+
+        .university-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .university-header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .university-header h2 {
+            font-size: 1.2rem;
+            color: #a0b3c5;
+            font-weight: 500;
+        }
+
+        /* Tabs */
+        .auth-tabs {
+            display: flex;
+            margin-bottom: 2rem;
+            background: rgba(10, 12, 28, 0.7);
+            border-radius: 12px;
+            padding: 5px;
+            position: relative;
+        }
+
+        .auth-tab {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s;
+            font-weight: 600;
+            z-index: 1;
+        }
+
+        .auth-tab.active {
+            color: var(--dark);
+        }
+
+        .tab-indicator {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            height: calc(100% - 10px);
+            width: calc(50% - 5px);
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 8px;
+            transition: transform 0.3s;
+        }
+
+        .tab-indicator.signup {
+            transform: translateX(100%);
+        }
+
+        /* Forms */
+        .auth-form {
+            display: block;
+        }
+
+        .auth-form.hidden {
+            display: none;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--light);
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid rgba(0, 247, 255, 0.2);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background: rgba(10, 12, 28, 0.7);
+            color: var(--light);
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(0, 247, 255, 0.1);
+        }
+
+        .form-group input::placeholder {
+            color: #6b7b8c;
+        }
+
+        .password-strength {
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .password-strength-bar {
+            height: 100%;
+            width: 0;
+            border-radius: 2px;
+            transition: width 0.3s, background-color 0.3s;
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .remember-me input {
+            width: auto;
+        }
+
+        .link {
+            color: var(--primary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .link:hover {
+            color: var(--secondary);
+        }
+
+        /* Buttons */
+        .btn-primary {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: var(--dark);
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 247, 255, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-loading {
+            display: none;
+        }
+
+        .form-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(0, 247, 255, 0.1);
+        }
+
+        .security-notice {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 12px;
+            background: rgba(0, 247, 255, 0.1);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+
+        .lock-icon {
+            color: var(--primary);
+        }
+
+        /* System Info */
+        .system-info {
+            flex: 1;
+            max-width: 500px;
+        }
+
+        .system-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .features-list {
+            list-style: none;
+        }
+
+        .features-list li {
+            padding: 1rem 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.1rem;
+            border-bottom: 1px solid rgba(0, 247, 255, 0.1);
+        }
+
+        .features-list li:last-child {
+            border-bottom: none;
+        }
+
+        .feature-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: rgba(0, 247, 255, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        /* Success Message */
+        .success-message {
+            background: rgba(0, 255, 157, 0.1);
+            border: 1px solid var(--success);
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            display: none;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .success-message i {
+            color: var(--success);
+            font-size: 1.2rem;
+        }
+
+        /* Error Message */
+        .error-message {
+            color: var(--accent);
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: block;
+            min-height: 20px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .container {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .system-info {
+                max-width: 100%;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .auth-card {
+                padding: 2rem 1.5rem;
+            }
+
+            .form-options {
+                flex-direction: column;
+                gap: 1rem;
+                align-items: flex-start;
+            }
+
+            .header {
+                padding: 1rem;
+            }
+        }
+
+        /* Hidden utility class */
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Animation -->
+    <div class="bg-animation">
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+        <div class="floating-shape"></div>
+    </div>
+
+    <!-- Header -->
+    <div class="header">
+        <a href="landing.html" class="logo">
+            <div class="logo-icon">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <div class="logo-text">UniPort Bursary</div>
+        </a>
+        
+        <a href="landing.html" class="back-home">
+            <i class="fas fa-arrow-left"></i> Back to Home
+        </a>
+    </div>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Auth Card -->
+        <div class="auth-card">
+            <div class="university-header">
+                <h1>University of Port Harcourt</h1>
+                <h2>Bursary Authentication System</h2>
+            </div>
+
+            <!-- Tabs -->
+            <div class="auth-tabs">
+                <div class="tab-indicator" id="tabIndicator"></div>
+                <div class="auth-tab active" data-tab="login">Login</div>
+                <div class="auth-tab" data-tab="signup">Sign Up</div>
+            </div>
+
+            <!-- Success Message -->
+            <div class="success-message" id="successMessage">
+                <i class="fas fa-check-circle"></i>
+                <span id="successText">Account created successfully! You can now login.</span>
+            </div>
+
+            <!-- Login Form -->
+            <form id="loginForm" class="auth-form">
+                <div class="form-group">
+                    <label for="username">Username / Student ID</label>
+                    <input type="text" id="username" name="username" required 
+                           placeholder="Enter your username or student ID">
+                    <span class="error-message" id="usernameError"></span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required 
+                           placeholder="Enter your password">
+                    <span class="error-message" id="passwordError"></span>
+                </div>
+
+                <div class="form-options">
+                    <label class="remember-me">
+                        <input type="checkbox" id="rememberMe">
+                        Remember me
+                    </label>
+                    <a href="reset-password.html" class="link">Forgot Password?</a>
+                </div>
+                
+                <button type="submit" class="btn-primary" id="loginBtn">
+                    <span class="btn-text">Login to Bursary</span>
+                    <span class="btn-loading hidden">Authenticating...</span>
+                </button>
+            </form>
+
+            <!-- Signup Form -->
+            <form id="signupForm" class="auth-form hidden">
+                <div class="form-group">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName" name="fullName" required 
+                           placeholder="Enter your full name">
+                    <span class="error-message" id="fullNameError"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="studentId">Student ID</label>
+                    <input type="text" id="studentId" name="studentId" required 
+                           placeholder="e.g. U2021/5570150">
+                    <span class="error-message" id="studentIdError"></span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">University Email</label>
+                    <input type="email" id="email" name="email" required 
+                           placeholder="your.email@uniport.edu.ng">
+                    <span class="error-message" id="emailError"></span>
+                </div>
+                
+                <div class="form-group">
+                    <label for="newPassword">Password</label>
+                    <input type="password" id="newPassword" name="newPassword" required 
+                           placeholder="Create a strong password">
+                    <div class="password-strength">
+                        <div class="password-strength-bar" id="passwordStrengthBar"></div>
+                    </div>
+                    <span class="error-message" id="newPasswordError"></span>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" required 
+                           placeholder="Confirm your password">
+                    <span class="error-message" id="confirmPasswordError"></span>
+                </div>
+                
+                <button type="submit" class="btn-primary" id="signupBtn">
+                    <span class="btn-text">Create Account</span>
+                    <span class="btn-loading hidden">Creating Account...</span>
+                </button>
+            </form>
+            
+            <div class="form-footer">
+                <div class="security-notice">
+                    <span class="lock-icon"><i class="fas fa-shield-alt"></i></span>
+                    Secure Multi-Factor Authentication
+                </div>
+            </div>
+        </div>
+        
+           <!-- System Info -->
+    <div class="system-info">
+        <h3>Enhanced Security Features</h3>
+        <ul class="features-list">
+            <li>
+                <div class="feature-icon">
+                    <i class="fas fa-fingerprint"></i>
+                </div>
+                <span>Multi-Factor Authentication</span>
+            </li>
+            <li>
+                <div class="feature-icon">
+                    <i class="fas fa-lock"></i>
+                </div>
+                <span>End-to-End Encryption</span>
+            </li>
+            <li>
+                <div class="feature-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <span>Real-time Activity Monitoring</span>
+            </li>
+            <li>
+                <div class="feature-icon">
+                    <i class="fas fa-user-shield"></i>
+                </div>
+                <span>Secure Password Policies</span>
+            </li>
+            <li>
+                <div class="feature-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <span>Instant Access to Bursary Services</span>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<!-- Load auth.js FIRST -->
+<script src="scripts/auth.js"></script>
+
+<!-- Then run the inline script that depends on auth.js -->
+<script>
+    // Wait for the DOM and auth.js to be fully loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log("🔍 Login page loaded - initializing...");
+        
+        // DOM Elements
+        const loginTab = document.querySelector('[data-tab="login"]');
+        const signupTab = document.querySelector('[data-tab="signup"]');
+        const tabIndicator = document.getElementById('tabIndicator');
+        const loginForm = document.getElementById('loginForm');
+        const signupForm = document.getElementById('signupForm');
+        const successMessage = document.getElementById('successMessage');
+        const successText = document.getElementById('successText');
+        const passwordStrengthBar = document.getElementById('passwordStrengthBar');
+        const newPasswordInput = document.getElementById('newPassword');
+
+        // Check if auth.js functions are available
+        if (typeof handleLogin === 'undefined') {
+            console.error("❌ handleLogin is not defined! Check auth.js loading");
+            return;
+        }
+
+        // Tab Switching
+        if (loginTab && signupTab) {
+            loginTab.addEventListener('click', () => switchTab('login'));
+            signupTab.addEventListener('click', () => switchTab('signup'));
+        }
+
+        function switchTab(tab) {
+            if (tab === 'login') {
+                loginTab.classList.add('active');
+                signupTab.classList.remove('active');
+                if (tabIndicator) tabIndicator.classList.remove('signup');
+                if (loginForm) loginForm.classList.remove('hidden');
+                if (signupForm) signupForm.classList.add('hidden');
+                if (successMessage) successMessage.style.display = 'none';
+            } else {
+                loginTab.classList.remove('active');
+                signupTab.classList.add('active');
+                if (tabIndicator) tabIndicator.classList.add('signup');
+                if (loginForm) loginForm.classList.add('hidden');
+                if (signupForm) signupForm.classList.remove('hidden');
+            }
+        }
+
+        // Password Strength Indicator
+        if (newPasswordInput && passwordStrengthBar) {
+            newPasswordInput.addEventListener('input', function() {
+                const password = this.value;
+                let strength = 0;
+                
+                // Length check
+                if (password.length >= 8) strength += 25;
+                
+                // Contains lowercase
+                if (/[a-z]/.test(password)) strength += 25;
+                
+                // Contains uppercase
+                if (/[A-Z]/.test(password)) strength += 25;
+                
+                // Contains numbers or special characters
+                if (/[0-9]/.test(password) || /[^A-Za-z0-9]/.test(password)) strength += 25;
+                
+                // Update strength bar
+                passwordStrengthBar.style.width = `${strength}%`;
+                
+                // Update color based on strength
+                if (strength < 50) {
+                    passwordStrengthBar.style.backgroundColor = '#ff2a6d';
+                } else if (strength < 75) {
+                    passwordStrengthBar.style.backgroundColor = '#ffb800';
+                } else {
+                    passwordStrengthBar.style.backgroundColor = '#00ff9d';
+                }
+            });
+        }
+
+        // Form Validation and Submission
+        if (loginForm) {
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                console.log("🔍 Login form submitted");
+                if (typeof handleLogin === 'function') {
+                    handleLogin();
+                } else {
+                    console.error("❌ handleLogin is not a function");
+                }
+            });
+        }
+
+        if (signupForm) {
+            signupForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                console.log("🔍 Signup form submitted");
+                if (typeof handleSignup === 'function') {
+                    handleSignup();
+                } else {
+                    console.error("❌ handleSignup is not a function");
+                }
+            });
+        }
+
+        // Test backend connection
+        async function testBackendConnection() {
+            try {
+                const response = await fetch('http://localhost:5000/api/test');
+                const data = await response.json();
+                console.log("✅ Backend connection:", data.status);
+                return true;
+            } catch (error) {
+                console.error("❌ Backend connection failed:", error);
+                return false;
+            }
+        }
+
+        // Initialize
+        testBackendConnection();
+    });
+</script>
+</body>
+</html>
