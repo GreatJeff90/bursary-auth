@@ -103,7 +103,7 @@
             position: fixed;
             width: 100%;
             z-index: 1000;
-            padding: 0.5rem 2rem;
+            padding: 0.5rem 1rem;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
@@ -122,19 +122,19 @@
         }
 
         .logo img {
-            height: 60px;
+            height: 50px;
             width: auto;
         }
 
         .logo-text {
-            font-size: 1.5rem;
+            font-size: 1.25rem;
             font-weight: 700;
             color: var(--primary);
         }
 
         .nav-links {
             display: flex;
-            gap: 2rem;
+            gap: 1.5rem;
             list-style: none;
         }
 
@@ -187,24 +187,28 @@
 
         /* Hero Section */
         .hero {
-            padding: 10rem 2rem 5rem;
+            padding: 8rem 1rem 4rem;
             max-width: 1400px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
+            grid-template-columns: 1fr;
+            gap: 3rem;
             align-items: center;
         }
 
+        .hero-content {
+            text-align: center;
+        }
+
         .hero-content h1 {
-            font-size: 3.5rem;
+            font-size: 2.5rem;
             line-height: 1.2;
             margin-bottom: 1.5rem;
             color: var(--primary);
         }
 
         .hero-content p {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             margin-bottom: 2rem;
             color: var(--text-light);
             line-height: 1.6;
@@ -213,6 +217,8 @@
         .hero-btns {
             display: flex;
             gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
         }
 
         .btn {
@@ -252,7 +258,7 @@
 
         .hero-visual {
             position: relative;
-            height: 400px;
+            height: 300px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -266,19 +272,19 @@
             backdrop-filter: blur(10px);
             border: 1px solid rgba(0, 51, 102, 0.1);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            width: 280px;
+            width: 250px;
             transition: transform 0.5s, opacity 0.5s;
         }
 
         .card-1 {
             top: 0;
-            left: 0;
+            left: 5%;
             transform: rotate(-5deg);
         }
 
         .card-2 {
             bottom: 0;
-            right: 0;
+            right: 5%;
             transform: rotate(5deg);
         }
 
@@ -287,7 +293,7 @@
             left: 50%;
             transform: translate(-50%, -50%) rotate(0deg);
             z-index: 2;
-            width: 320px;
+            width: 280px;
         }
 
         .floating-card:hover {
@@ -315,7 +321,7 @@
         }
 
         .card-title {
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 600;
             color: var(--primary);
         }
@@ -328,39 +334,39 @@
 
         /* Features Section */
         .features {
-            padding: 5rem 2rem;
+            padding: 4rem 1rem;
             max-width: 1400px;
             margin: 0 auto;
         }
 
         .section-header {
             text-align: center;
-            margin-bottom: 4rem;
+            margin-bottom: 3rem;
         }
 
         .section-title {
-            font-size: 2.5rem;
+            font-size: 2rem;
             margin-bottom: 1rem;
             color: var(--primary);
         }
 
         .section-subtitle {
             color: var(--text-light);
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             max-width: 600px;
             margin: 0 auto;
         }
 
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
         }
 
         .feature-card {
             background: var(--card-bg);
             border-radius: 8px;
-            padding: 2rem;
+            padding: 1.5rem;
             border: 1px solid rgba(0, 51, 102, 0.1);
             transition: transform 0.3s, border-color 0.3s;
             position: relative;
@@ -386,19 +392,19 @@
         }
 
         .feature-card:hover {
-            transform: translateY(-10px);
+            transform: translateY(-5px);
             border-color: rgba(0, 51, 102, 0.3);
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
 
         .feature-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1.5rem;
+            font-size: 2rem;
+            margin-bottom: 1rem;
             color: var(--primary);
         }
 
         .feature-title {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             margin-bottom: 1rem;
             color: var(--primary);
         }
@@ -406,7 +412,7 @@
         .feature-desc {
             color: var(--text-light);
             line-height: 1.6;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
         }
 
         .feature-list {
@@ -429,7 +435,7 @@
 
         /* Stats Section */
         .stats {
-            padding: 5rem 2rem;
+            padding: 4rem 1rem;
             background: rgba(0, 51, 102, 0.05);
             border-top: 1px solid rgba(0, 51, 102, 0.1);
             border-bottom: 1px solid rgba(0, 51, 102, 0.1);
@@ -439,17 +445,17 @@
             max-width: 1400px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
         }
 
         .stat-item {
             text-align: center;
-            padding: 2rem;
+            padding: 1.5rem;
         }
 
         .stat-number {
-            font-size: 3rem;
+            font-size: 2.5rem;
             font-weight: 700;
             color: var(--primary);
             margin-bottom: 0.5rem;
@@ -457,26 +463,26 @@
 
         .stat-label {
             color: var(--text-light);
-            font-size: 1.1rem;
+            font-size: 1rem;
         }
 
         /* CTA Section */
         .cta {
-            padding: 5rem 2rem;
+            padding: 4rem 1rem;
             text-align: center;
             max-width: 800px;
             margin: 0 auto;
         }
 
         .cta h2 {
-            font-size: 2.5rem;
+            font-size: 2rem;
             margin-bottom: 1.5rem;
             color: var(--primary);
         }
 
         .cta p {
             color: var(--text-light);
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             margin-bottom: 2rem;
             line-height: 1.6;
         }
@@ -485,20 +491,20 @@
         footer {
             background: var(--primary);
             color: var(--secondary);
-            padding: 3rem 2rem 1rem;
+            padding: 2rem 1rem 1rem;
         }
 
         .footer-container {
             max-width: 1400px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 3rem;
+            grid-template-columns: 1fr;
+            gap: 2rem;
         }
 
         .footer-col h3 {
-            font-size: 1.3rem;
-            margin-bottom: 1.5rem;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
             color: var(--secondary);
         }
 
@@ -523,7 +529,7 @@
         .social-links {
             display: flex;
             gap: 1rem;
-            margin-top: 1.5rem;
+            margin-top: 1rem;
         }
 
         .social-links a {
@@ -546,7 +552,7 @@
 
         .copyright {
             text-align: center;
-            margin-top: 3rem;
+            margin-top: 2rem;
             padding-top: 1.5rem;
             border-top: 1px solid rgba(255, 255, 255, 0.2);
             color: rgba(255, 255, 255, 0.8);
@@ -564,26 +570,103 @@
         }
 
         /* Responsive Design */
-        @media (max-width: 992px) {
+        @media (min-width: 576px) {
+            header {
+                padding: 0.5rem 1.5rem;
+            }
+            
             .hero {
-                grid-template-columns: 1fr;
-                text-align: center;
+                padding: 9rem 1.5rem 5rem;
             }
-
-            .hero-visual {
-                height: 300px;
+            
+            .features {
+                padding: 5rem 1.5rem;
             }
-
-            .floating-card {
-                width: 220px;
+            
+            .stats {
+                padding: 5rem 1.5rem;
             }
-
-            .card-3 {
-                width: 250px;
+            
+            .cta {
+                padding: 5rem 1.5rem;
+            }
+            
+            footer {
+                padding: 3rem 1.5rem 1rem;
+            }
+            
+            .stats-container {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
 
-        @media (max-width: 768px) {
+        @media (min-width: 768px) {
+            .hero {
+                grid-template-columns: 1fr 1fr;
+                text-align: left;
+                padding: 10rem 2rem 5rem;
+            }
+            
+            .hero-content {
+                text-align: left;
+            }
+            
+            .hero-btns {
+                justify-content: flex-start;
+            }
+            
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .stats-container {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            
+            .footer-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .nav-links {
+                display: flex;
+            }
+            
+            .mobile-menu-btn {
+                display: none;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .hero {
+                gap: 4rem;
+            }
+            
+            .hero-content h1 {
+                font-size: 3rem;
+            }
+            
+            .hero-visual {
+                height: 400px;
+            }
+            
+            .floating-card {
+                width: 280px;
+            }
+            
+            .card-3 {
+                width: 320px;
+            }
+            
+            .features-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .footer-container {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        @media (max-width: 767px) {
             .nav-links {
                 display: none;
                 position: absolute;
@@ -613,13 +696,53 @@
             .mobile-menu-btn {
                 display: block;
             }
-
-            .hero-content h1 {
-                font-size: 2.5rem;
+            
+            .hero-visual {
+                height: 250px;
             }
+            
+            .floating-card {
+                width: 200px;
+            }
+            
+            .card-3 {
+                width: 220px;
+            }
+        }
 
-            .section-title {
+        @media (max-width: 480px) {
+            .hero-content h1 {
                 font-size: 2rem;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .hero-visual {
+                height: 200px;
+            }
+            
+            .floating-card {
+                width: 160px;
+                padding: 1rem;
+            }
+            
+            .card-3 {
+                width: 180px;
+            }
+            
+            .card-title {
+                font-size: 0.9rem;
+            }
+            
+            .card-content {
+                font-size: 0.8rem;
+            }
+            
+            .btn {
+                padding: 0.7rem 1.5rem;
+                font-size: 0.9rem;
             }
         }
     </style>
@@ -652,7 +775,7 @@
             </ul>
             
             <a href="login.html" class="login-btn">
-                <i class="fas fa-sign-in-alt"></i> Student Login
+                 Login
             </a>
         </div>
     </header>
