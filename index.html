@@ -14,22 +14,24 @@
         }
 
         :root {
-            --primary: #00f7ff;
-            --secondary: #7b2cbf;
-            --dark: #0a0a16;
-            --darker: #050510;
-            --light: #e2f1f8;
-            --accent: #ff2a6d;
-            --card-bg: rgba(16, 18, 36, 0.7);
+            --primary: #003366; /* UniPort Blue */
+            --secondary: #ffffff; /* White */
+            --accent: #0099cc; /* Lighter blue accent */
+            --dark: #001a33; /* Dark blue */
+            --darker: #000d1a; /* Darker blue */
+            --light: #f5f5f5; /* Light background */
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --text-dark: #333333;
+            --text-light: #666666;
         }
 
         body {
-            background-color: var(--darker);
-            color: var(--light);
+            background-color: var(--light);
+            color: var(--text-dark);
             overflow-x: hidden;
             background-image: 
-                radial-gradient(circle at 10% 20%, rgba(123, 44, 191, 0.15) 0%, transparent 20%),
-                radial-gradient(circle at 90% 80%, rgba(0, 247, 255, 0.1) 0%, transparent 20%);
+                radial-gradient(circle at 10% 20%, rgba(0, 51, 102, 0.05) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(0, 153, 204, 0.05) 0%, transparent 20%);
             min-height: 100vh;
         }
 
@@ -48,7 +50,7 @@
             position: absolute;
             border-radius: 50%;
             background: radial-gradient(circle, var(--primary), transparent);
-            opacity: 0.1;
+            opacity: 0.05;
             animation: float 20s infinite linear;
         }
 
@@ -66,7 +68,7 @@
             top: 60%;
             left: 80%;
             animation-delay: -5s;
-            background: radial-gradient(circle, var(--secondary), transparent);
+            background: radial-gradient(circle, var(--accent), transparent);
         }
 
         .floating-shape:nth-child(3) {
@@ -75,7 +77,7 @@
             top: 20%;
             left: 70%;
             animation-delay: -10s;
-            background: radial-gradient(circle, var(--accent), transparent);
+            background: radial-gradient(circle, var(--primary), transparent);
         }
 
         @keyframes float {
@@ -95,13 +97,14 @@
 
         /* Header & Navigation */
         header {
-            background: rgba(10, 10, 22, 0.8);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(0, 247, 255, 0.2);
+            border-bottom: 1px solid rgba(0, 51, 102, 0.1);
             position: fixed;
             width: 100%;
             z-index: 1000;
-            padding: 1rem 2rem;
+            padding: 0.5rem 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
 
         .nav-container {
@@ -118,17 +121,15 @@
             gap: 10px;
         }
 
-        .logo-icon {
-            color: var(--primary);
-            font-size: 1.8rem;
+        .logo img {
+            height: 60px;
+            width: auto;
         }
 
         .logo-text {
             font-size: 1.5rem;
             font-weight: 700;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--primary);
         }
 
         .nav-links {
@@ -138,7 +139,7 @@
         }
 
         .nav-links a {
-            color: var(--light);
+            color: var(--text-dark);
             text-decoration: none;
             font-weight: 500;
             position: relative;
@@ -166,21 +167,22 @@
         }
 
         .login-btn {
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            color: var(--dark);
+            background: var(--primary);
+            color: var(--secondary);
             border: none;
             padding: 0.7rem 1.5rem;
-            border-radius: 30px;
+            border-radius: 4px;
             font-weight: 600;
             cursor: pointer;
-            transition: transform 0.3s, box-shadow 0.3s;
+            transition: all 0.3s;
             text-decoration: none;
             display: inline-block;
         }
 
         .login-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 247, 255, 0.4);
+            background: var(--accent);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 51, 102, 0.3);
         }
 
         /* Hero Section */
@@ -198,15 +200,13 @@
             font-size: 3.5rem;
             line-height: 1.2;
             margin-bottom: 1.5rem;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--primary);
         }
 
         .hero-content p {
             font-size: 1.2rem;
             margin-bottom: 2rem;
-            color: #a0b3c5;
+            color: var(--text-light);
             line-height: 1.6;
         }
 
@@ -217,7 +217,7 @@
 
         .btn {
             padding: 0.8rem 1.8rem;
-            border-radius: 30px;
+            border-radius: 4px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s;
@@ -226,8 +226,8 @@
         }
 
         .btn-primary {
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            color: var(--dark);
+            background: var(--primary);
+            color: var(--secondary);
             border: none;
         }
 
@@ -239,7 +239,15 @@
 
         .btn:hover {
             transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 247, 255, 0.4);
+            box-shadow: 0 5px 15px rgba(0, 51, 102, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(0, 51, 102, 0.1);
         }
 
         .hero-visual {
@@ -253,11 +261,11 @@
         .floating-card {
             position: absolute;
             background: var(--card-bg);
-            border-radius: 15px;
+            border-radius: 8px;
             padding: 1.5rem;
             backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 247, 255, 0.2);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(0, 51, 102, 0.1);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             width: 280px;
             transition: transform 0.5s, opacity 0.5s;
         }
@@ -285,6 +293,7 @@
         .floating-card:hover {
             transform: translateY(-10px) rotate(0deg);
             opacity: 1 !important;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
         }
 
         .card-header {
@@ -297,27 +306,28 @@
         .card-icon {
             width: 40px;
             height: 40px;
-            border-radius: 10px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: rgba(0, 247, 255, 0.1);
+            background: rgba(0, 51, 102, 0.1);
             color: var(--primary);
         }
 
         .card-title {
             font-size: 1.1rem;
             font-weight: 600;
+            color: var(--primary);
         }
 
         .card-content {
-            color: #a0b3c5;
+            color: var(--text-light);
             font-size: 0.9rem;
             line-height: 1.5;
         }
 
-        /* Services Section */
-        .services {
+        /* Features Section */
+        .features {
             padding: 5rem 2rem;
             max-width: 1400px;
             margin: 0 auto;
@@ -331,87 +341,87 @@
         .section-title {
             font-size: 2.5rem;
             margin-bottom: 1rem;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--primary);
         }
 
         .section-subtitle {
-            color: #a0b3c5;
+            color: var(--text-light);
             font-size: 1.2rem;
             max-width: 600px;
             margin: 0 auto;
         }
 
-        .services-grid {
+        .features-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
         }
 
-        .service-card {
+        .feature-card {
             background: var(--card-bg);
-            border-radius: 15px;
+            border-radius: 8px;
             padding: 2rem;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 247, 255, 0.1);
+            border: 1px solid rgba(0, 51, 102, 0.1);
             transition: transform 0.3s, border-color 0.3s;
             position: relative;
             overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
         }
 
-        .service-card::before {
+        .feature-card::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 4px;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            background: var(--primary);
             transform: scaleX(0);
             transform-origin: left;
             transition: transform 0.5s;
         }
 
-        .service-card:hover::before {
+        .feature-card:hover::before {
             transform: scaleX(1);
         }
 
-        .service-card:hover {
+        .feature-card:hover {
             transform: translateY(-10px);
-            border-color: rgba(0, 247, 255, 0.3);
+            border-color: rgba(0, 51, 102, 0.3);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
         }
 
-        .service-icon {
+        .feature-icon {
             font-size: 2.5rem;
             margin-bottom: 1.5rem;
             color: var(--primary);
         }
 
-        .service-title {
+        .feature-title {
             font-size: 1.5rem;
             margin-bottom: 1rem;
+            color: var(--primary);
         }
 
-        .service-desc {
-            color: #a0b3c5;
+        .feature-desc {
+            color: var(--text-light);
             line-height: 1.6;
             margin-bottom: 1.5rem;
         }
 
-        .service-features {
+        .feature-list {
             list-style: none;
         }
 
-        .service-features li {
+        .feature-list li {
             padding: 0.5rem 0;
-            color: #a0b3c5;
+            color: var(--text-light);
             display: flex;
             align-items: center;
             gap: 10px;
         }
 
-        .service-features li::before {
+        .feature-list li::before {
             content: '✓';
             color: var(--primary);
             font-weight: bold;
@@ -420,9 +430,9 @@
         /* Stats Section */
         .stats {
             padding: 5rem 2rem;
-            background: rgba(16, 18, 36, 0.5);
-            border-top: 1px solid rgba(0, 247, 255, 0.1);
-            border-bottom: 1px solid rgba(0, 247, 255, 0.1);
+            background: rgba(0, 51, 102, 0.05);
+            border-top: 1px solid rgba(0, 51, 102, 0.1);
+            border-bottom: 1px solid rgba(0, 51, 102, 0.1);
         }
 
         .stats-container {
@@ -441,14 +451,12 @@
         .stat-number {
             font-size: 3rem;
             font-weight: 700;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--primary);
             margin-bottom: 0.5rem;
         }
 
         .stat-label {
-            color: #a0b3c5;
+            color: var(--text-light);
             font-size: 1.1rem;
         }
 
@@ -463,13 +471,11 @@
         .cta h2 {
             font-size: 2.5rem;
             margin-bottom: 1.5rem;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: var(--primary);
         }
 
         .cta p {
-            color: #a0b3c5;
+            color: var(--text-light);
             font-size: 1.2rem;
             margin-bottom: 2rem;
             line-height: 1.6;
@@ -477,8 +483,8 @@
 
         /* Footer */
         footer {
-            background: rgba(5, 5, 16, 0.9);
-            border-top: 1px solid rgba(0, 247, 255, 0.1);
+            background: var(--primary);
+            color: var(--secondary);
             padding: 3rem 2rem 1rem;
         }
 
@@ -493,7 +499,7 @@
         .footer-col h3 {
             font-size: 1.3rem;
             margin-bottom: 1.5rem;
-            color: var(--primary);
+            color: var(--secondary);
         }
 
         .footer-links {
@@ -505,13 +511,13 @@
         }
 
         .footer-links a {
-            color: #a0b3c5;
+            color: rgba(255, 255, 255, 0.8);
             text-decoration: none;
             transition: color 0.3s;
         }
 
         .footer-links a:hover {
-            color: var(--primary);
+            color: var(--secondary);
         }
 
         .social-links {
@@ -524,17 +530,17 @@
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background: rgba(0, 247, 255, 0.1);
+            background: rgba(255, 255, 255, 0.1);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--primary);
+            color: var(--secondary);
             transition: all 0.3s;
         }
 
         .social-links a:hover {
-            background: var(--primary);
-            color: var(--dark);
+            background: var(--secondary);
+            color: var(--primary);
             transform: translateY(-3px);
         }
 
@@ -542,9 +548,19 @@
             text-align: center;
             margin-top: 3rem;
             padding-top: 1.5rem;
-            border-top: 1px solid rgba(0, 247, 255, 0.1);
-            color: #a0b3c5;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            color: rgba(255, 255, 255, 0.8);
             font-size: 0.9rem;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-size: 1.5rem;
+            cursor: pointer;
         }
 
         /* Responsive Design */
@@ -570,6 +586,28 @@
         @media (max-width: 768px) {
             .nav-links {
                 display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: var(--secondary);
+                flex-direction: column;
+                padding: 1rem 0;
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-links li {
+                width: 100%;
+                text-align: center;
+            }
+
+            .nav-links a {
+                display: block;
+                padding: 1rem;
             }
 
             .mobile-menu-btn {
@@ -598,15 +636,17 @@
     <header>
         <div class="nav-container">
             <div class="logo">
-                <div class="logo-icon">
-                    <img src="images/logo.png" class="" width="100">
-                </div>
+                <img src="https://www.uniport.edu.ng/wp-content/themes/unipix/assets/images/logo/uniport_logo1.png" alt="UniPort Logo">
                 <div class="logo-text">UniPort Bursary</div>
             </div>
             
+            <button class="mobile-menu-btn">
+                <i class="fas fa-bars"></i>
+            </button>
+            
             <ul class="nav-links">
                 <li><a href="#home">Home</a></li>
-                <li><a href="#services">Services</a></li>
+                <li><a href="#features">Features</a></li>
                 <li><a href="#about">About</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
@@ -624,7 +664,7 @@
             <p>Experience the future of financial administration with our cutting-edge e-authentication system. Secure, efficient, and designed for the digital age.</p>
             <div class="hero-btns">
                 <a href="login.html" class="btn btn-primary">Access Portal</a>
-                <a href="#services" class="btn btn-secondary">Learn More</a>
+                <a href="#features" class="btn btn-secondary">Learn More</a>
             </div>
         </div>
         
@@ -667,21 +707,21 @@
         </div>
     </section>
 
-    <!-- Services Section -->
-    <section class="services" id="services">
+    <!-- Features Section -->
+    <section class="features" id="features">
         <div class="section-header">
-            <h2 class="section-title">Our Services</h2>
+            <h2 class="section-title">System Features</h2>
             <p class="section-subtitle">Comprehensive financial solutions designed for modern educational institutions</p>
         </div>
         
-        <div class="services-grid">
-            <div class="service-card">
-                <div class="service-icon">
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
                     <i class="fas fa-user-shield"></i>
                 </div>
-                <h3 class="service-title">Secure Authentication</h3>
-                <p class="service-desc">Multi-factor authentication system with advanced encryption and biometric verification options.</p>
-                <ul class="service-features">
+                <h3 class="feature-title">Secure Authentication</h3>
+                <p class="feature-desc">Multi-factor authentication system with advanced encryption and biometric verification options.</p>
+                <ul class="feature-list">
                     <li>One-Time Password (OTP) verification</li>
                     <li>Biometric authentication support</li>
                     <li>End-to-end encryption</li>
@@ -689,13 +729,13 @@
                 </ul>
             </div>
             
-            <div class="service-card">
-                <div class="service-icon">
+            <div class="feature-card">
+                <div class="feature-icon">
                     <i class="fas fa-money-check-alt"></i>
                 </div>
-                <h3 class="service-title">Bursary Management</h3>
-                <p class="service-desc">Complete digital management of student bursaries, scholarships, and financial aid programs.</p>
-                <ul class="service-features">
+                <h3 class="feature-title">Bursary Management</h3>
+                <p class="feature-desc">Complete digital management of student bursaries, scholarships, and financial aid programs.</p>
+                <ul class="feature-list">
                     <li>Automated application processing</li>
                     <li>Real-time disbursement tracking</li>
                     <li>Customizable eligibility criteria</li>
@@ -703,13 +743,13 @@
                 </ul>
             </div>
             
-            <div class="service-card">
-                <div class="service-icon">
+            <div class="feature-card">
+                <div class="feature-icon">
                     <i class="fas fa-chart-pie"></i>
                 </div>
-                <h3 class="service-title">Financial Analytics</h3>
-                <p class="service-desc">AI-powered insights and predictive analytics for optimal resource allocation and planning.</p>
-                <ul class="service-features">
+                <h3 class="feature-title">Financial Analytics</h3>
+                <p class="feature-desc">AI-powered insights and predictive analytics for optimal resource allocation and planning.</p>
+                <ul class="feature-list">
                     <li>Predictive financial modeling</li>
                     <li>Automated budget optimization</li>
                     <li>Interactive dashboards</li>
@@ -753,7 +793,7 @@
         <div class="footer-container">
             <div class="footer-col">
                 <h3>UniPort Bursary</h3>
-                <p style="color: #a0b3c5; line-height: 1.6;">Revolutionizing university financial management through cutting-edge technology and secure authentication systems.</p>
+                <p style="color: rgba(255, 255, 255, 0.8); line-height: 1.6;">Revolutionizing university financial management through cutting-edge technology and secure authentication systems.</p>
                 <div class="social-links">
                     <a href="#"><i class="fab fa-twitter"></i></a>
                     <a href="#"><i class="fab fa-facebook-f"></i></a>
@@ -766,7 +806,7 @@
                 <h3>Quick Links</h3>
                 <ul class="footer-links">
                     <li><a href="#home">Home</a></li>
-                    <li><a href="#services">Services</a></li>
+                    <li><a href="#features">Features</a></li>
                     <li><a href="#about">About Us</a></li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>
@@ -843,6 +883,14 @@
                         });
                     }
                 });
+            });
+            
+            // Mobile menu toggle
+            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+            const navLinks = document.querySelector('.nav-links');
+            
+            mobileMenuBtn.addEventListener('click', function() {
+                navLinks.classList.toggle('active');
             });
         });
     </script>
