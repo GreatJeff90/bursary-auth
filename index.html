@@ -4,1018 +4,488 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UniPort Bursary | Next-Gen Financial Management</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <meta name="theme-color" content="#003366">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        /* === PERFORMANCE & RESET === */
+        *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+        :root{
+            --primary:#003366;--secondary:#fff;--accent:#0099cc;
+            --dark:#001a33;--light:#f5f5f5;--text:#333;--muted:#666;
+            --radius:8px;--gap:1.5rem;--transition:.35s ease;
+        }
+        html{font-family:system-ui,-apple-system,Arial,sans-serif;line-height:1.6}
+        body{
+            background:var(--light);
+            color:var(--text);
+            min-height:100vh;
+            background:radial-gradient(circle at 10% 20%,rgba(0,51,102,.06),transparent 20%),
+                       radial-gradient(circle at 90% 80%,rgba(0,153,204,.06),transparent 20%);
+        }
+        img{max-width:100%;display:block}
+        a{color:inherit;text-decoration:none}
+        button{background:none;border:none;cursor:pointer;font:inherit}
+        .container{max-width:1400px;margin:auto;padding:0 var(--gap)}
+        .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+
+        /* === HEADER === */
+        header{
+            position:fixed;top:0;left:0;right:0;z-index:1000;
+            background:rgba(255,255,255,.95);backdrop-filter:blur(12px);
+            border-bottom:1px solid #00336611;box-shadow:0 2px 12px #0000000d;
+        }
+        .nav{
+            display:flex;align-items:center;justify-content:space-between;
+            padding:0.75rem var(--gap);gap:1rem;flex-wrap:wrap;
+        }
+        .logo{
+            display:flex;align-items:center;gap:.75rem;font-weight:700;color:var(--primary);
+        }
+        .logo img{height:48px;width:auto}
+        .nav-links{
+            display:flex;gap:1.75rem;align-items:center;list-style:none;
+        }
+        .nav-links a{
+            position:relative;padding:.5rem 0;font-weight:500;color:var(--text);
+            transition:var(--transition);
+        }
+        .nav-links a::after{
+            content:"";position:absolute;bottom:0;left:0;width:0;height:2px;
+            background:var(--primary);transition:var(--transition);
+        }
+        .nav-links a:hover{color:var(--primary)}
+        .nav-links a:hover::after{width:100%}
+        .login-btn{
+            background:var(--primary);color:var(--secondary);
+            padding:.75rem 1.5rem;border-radius:var(--radius);font-weight:600;
+            transition:var(--transition);
+        }
+        .login-btn:hover{
+            background:var(--accent);transform:translateY(-2px);
+            box-shadow:0 6px 20px #00336644;
         }
 
-        :root {
-            --primary: #003366; /* UniPort Blue */
-            --secondary: #ffffff; /* White */
-            --accent: #0099cc; /* Lighter blue accent */
-            --dark: #001a33; /* Dark blue */
-            --darker: #000d1a; /* Darker blue */
-            --light: #f5f5f5; /* Light background */
-            --card-bg: rgba(255, 255, 255, 0.9);
-            --text-dark: #333333;
-            --text-light: #666666;
+        /* === MOBILE MENU === */
+        .menu-btn{display:none;font-size:1.5rem;color:var(--primary)}
+
+        /* === HERO === */
+        .hero{
+            padding:8rem var(--gap) 4rem;
+            display:grid;gap:var(--gap);align-items:center;
+        }
+        .hero-content{text-align:center}
+        .hero h1{
+            font-size:2.6rem;color:var(--primary);margin-bottom:1rem;
+            line-height:1.2;
+        }
+        .hero p{
+            font-size:1.1rem;color:var(--muted);max-width:640px;margin:auto auto 2rem;
+        }
+        .hero-btns{
+            display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;
+        }
+        .btn{
+            padding:.9rem 2rem;border-radius:var(--radius);font-weight:600;
+            transition:var(--transition);display:inline-block;
+        }
+        .btn-primary{background:var(--primary);color:var(--secondary);border:none}
+        .btn-secondary{
+            background:transparent;color:var(--primary);border:2px solid var(--primary);
+        }
+        .btn:hover{transform:translateY(-3px);box-shadow:0 8px 20px #00336633}
+        .btn-primary:hover{background:var(--accent)}
+        .btn-secondary:hover{background:#0033660d}
+
+        /* Floating Cards */
+        .visual{
+            position:relative;height:320px;perspective:1000px;
+        }
+        .f-card{
+            position:absolute;background:var(--secondary);
+            border-radius:var(--radius);padding:1.25rem;
+            box-shadow:0 10px 30px #00000014;
+            backdrop-filter:blur(10px);border:1px solid #00336611;
+            width:260px;opacity:0;transform:translateY(20px);
+            animation:fadeIn .8s forwards;
+        }
+        .f-card:nth-child(1){top:0;left:5%;animation-delay:.2s;transform:rotate(-6deg)}
+        .f-card:nth-child(2){bottom:0;right:5%;animation-delay:.4s;transform:rotate(6deg)}
+        .f-card:nth-child(3){
+            top:50%;left:50%;transform:translate(-50%,-50%);
+            z-index:2;width:290px;animation-delay:.6s;
+        }
+        .f-card:hover{
+            transform:translateY(-10px) rotate(0)!important;
+            box-shadow:0 20px 40px #0000001a;z-index:3;
+        }
+        .f-head{display:flex;gap:.75rem;align-items:center;margin-bottom:.75rem}
+        .f-icon{
+            width:44px;height:44px;border-radius:8px;
+            background:#00336611;color:var(--primary);
+            display:flex;align-items:center;justify-content:center;
+        }
+        .f-title{font-weight:600;color:var(--primary)}
+        .f-text{font-size:.94rem;color:var(--muted)}
+
+        @keyframes fadeIn{
+            to{opacity:1;transform:translateY(0) rotate(var(--r,0deg))}
         }
 
-        body {
-            background-color: var(--light);
-            color: var(--text-dark);
-            overflow-x: hidden;
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(0, 51, 102, 0.05) 0%, transparent 20%),
-                radial-gradient(circle at 90% 80%, rgba(0, 153, 204, 0.05) 0%, transparent 20%);
-            min-height: 100vh;
+        /* === FEATURES === */
+        .features{padding:4rem var(--gap)}
+        .sec-head{text-align:center;margin-bottom:3rem}
+        .sec-title{font-size:2.1rem;color:var(--primary);margin-bottom:.75rem}
+        .sec-sub{color:var(--muted);max-width:640px;margin:auto}
+        .grid{
+            display:grid;gap:var(--gap);
+            grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+        }
+        .card{
+            background:var(--secondary);border-radius:var(--radius);
+            padding:1.75rem;border:1px solid #00336611;
+            transition:var(--transition);position:relative;overflow:hidden;
+        }
+        .card::before{
+            content:"";position:absolute;top:0;left:0;height:4px;width:100%;
+            background:var(--primary);transform:scaleX(0);transition:var(--transition);
+        }
+        .card:hover{
+            transform:translateY(-6px);box-shadow:0 12px 30px #00000012;
+        }
+        .card:hover::before{transform:scaleX(1)}
+        .c-icon{font-size:2.2rem;color:var(--primary);margin-bottom:1rem}
+        .c-title{font-size:1.35rem;margin:1rem 0 .75rem;color:var(--primary)}
+        .c-desc{color:var(--muted);margin-bottom:1rem}
+        .c-list{list-style:none}
+        .c-list li{
+            padding:.4rem 0;display:flex;gap:.5rem;align-items:center;
+            color:var(--muted);font-size:.95rem;
+        }
+        .c-list li::before{content:"✓";color:var(--primary);font-weight:700}
+
+        /* === STATS === */
+        .stats{
+            padding:4rem var(--gap);background:#00336608;
+            border-top:1px solid #00336611;
+        }
+        .stats-grid{
+            display:grid;gap:2rem;
+            grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+            text-align:center;
+        }
+        .stat-num{
+            font-size:2.6rem;font-weight:800;color:var(--primary);
+            line-height:1;
+        }
+        .stat-lab{font-size:1rem;color:var(--muted);margin-top:.5rem}
+
+        /* === CTA === */
+        .cta{
+            padding:5rem var(--gap);text-align:center;
+        }
+        .cta h2{font-size:2.2rem;color:var(--primary);margin-bottom:1rem}
+        .cta p{max-width:600px;margin:auto auto 2rem;color:var(--muted)}
+
+        /* === FOOTER === */
+        footer{
+            background:var(--primary);color:var(--secondary);padding:3rem var(--gap) 1.5rem;
+        }
+        .foot-grid{
+            display:grid;gap:2rem;
+            grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+        }
+        .f-col h3{margin-bottom:1rem;font-size:1.25rem}
+        .f-col p,.f-col li{color:#ffffffcc;font-size:.95rem;line-height:1.7}
+        .f-links{list-style:none}
+        .f-links a{
+            display:block;padding:.5rem 0;transition:var(--transition);
+        }
+        .f-links a:hover{color:var(--secondary)}
+        .social{
+            display:flex;gap:1rem;margin-top:1rem;
+        }
+        .social a{
+            width:42px;height:42px;border-radius:50%;
+            background:#ffffff1a;display:flex;align-items:center;
+            justify-content:center;transition:var(--transition);
+        }
+        .social a:hover{
+            background:var(--secondary);color:var(--primary);
+            transform:translateY(-4px);
+        }
+        .copy{
+            margin-top:2.5rem;padding-top:1.5rem;
+            border-top:1px solid #ffffff33;text-align:center;
+            font-size:.9rem;color:#ffffffb3;
         }
 
-        /* Background Animation */
-        .bg-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            overflow: hidden;
+        /* === BG ANIMATION === */
+        .bg-anim{
+            position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden;
+        }
+        .shape{
+            position:absolute;border-radius:50%;opacity:.06;
+            background:radial-gradient(circle,var(--primary),transparent);
+            animation:float 22s infinite linear;
+        }
+        .shape:nth-child(1){width:320px;height:320px;top:10%;left:5%;animation-delay:0s}
+        .shape:nth-child(2){width:220px;height:220px;top:65%;left:78%;animation-delay:-7s;background:radial-gradient(circle,var(--accent),transparent)}
+        .shape:nth-child(3){width:180px;height:180px;top:25%;left:72%;animation-delay:-14s}
+        @keyframes float{
+            0%,100%{transform:translate(0,0) rotate(0)}
+            33%{transform:translate(30px,-50px) rotate(120deg)}
+            66%{transform:translate(-20px,20px) rotate(240deg)}
         }
 
-        .floating-shape {
-            position: absolute;
-            border-radius: 50%;
-            background: radial-gradient(circle, var(--primary), transparent);
-            opacity: 0.05;
-            animation: float 20s infinite linear;
-        }
-
-        .floating-shape:nth-child(1) {
-            width: 300px;
-            height: 300px;
-            top: 10%;
-            left: 5%;
-            animation-delay: 0s;
-        }
-
-        .floating-shape:nth-child(2) {
-            width: 200px;
-            height: 200px;
-            top: 60%;
-            left: 80%;
-            animation-delay: -5s;
-            background: radial-gradient(circle, var(--accent), transparent);
-        }
-
-        .floating-shape:nth-child(3) {
-            width: 150px;
-            height: 150px;
-            top: 20%;
-            left: 70%;
-            animation-delay: -10s;
-            background: radial-gradient(circle, var(--primary), transparent);
-        }
-
-        @keyframes float {
-            0% {
-                transform: translate(0, 0) rotate(0deg);
+        /* === RESPONSIVE === */
+        @media (max-width:767px){
+            .menu-btn{display:block}
+            .nav-links{
+                position:absolute;top:100%;left:0;right:0;
+                background:var(--secondary);flex-direction:column;
+                box-shadow:0 8px 20px #0003;padding:1rem 0;
+                transform:translateY(-100%);opacity:0;
+                transition:var(--transition);pointer-events:none;
             }
-            33% {
-                transform: translate(30px, -50px) rotate(120deg);
+            .nav-links.active{
+                transform:translateY(0);opacity:1;pointer-events:auto;
             }
-            66% {
-                transform: translate(-20px, 20px) rotate(240deg);
-            }
-            100% {
-                transform: translate(0, 0) rotate(360deg);
-            }
-        }
-
-        /* Header & Navigation */
-        header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-bottom: 1px solid rgba(0, 51, 102, 0.1);
-            position: fixed;
-            width: 100%;
-            z-index: 1000;
-            padding: 0.5rem 1rem;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .nav-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .logo img {
-            height: 50px;
-            width: auto;
-        }
-
-        .logo-text {
-            font-size: 1.25rem;
-            font-weight: 700;
-            color: var(--primary);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 1.5rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: var(--text-dark);
-            text-decoration: none;
-            font-weight: 500;
-            position: relative;
-            padding: 0.5rem 0;
-            transition: color 0.3s;
-        }
-
-        .nav-links a:hover {
-            color: var(--primary);
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--primary);
-            transition: width 0.3s;
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        .login-btn {
-            background: var(--primary);
-            color: var(--secondary);
-            border: none;
-            padding: 0.7rem 1.5rem;
-            border-radius: 4px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .login-btn:hover {
-            background: var(--accent);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0, 51, 102, 0.3);
-        }
-
-        /* Hero Section */
-        .hero {
-            padding: 8rem 1rem 4rem;
-            max-width: 1400px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 3rem;
-            align-items: center;
-        }
-
-        .hero-content {
-            text-align: center;
-        }
-
-        .hero-content h1 {
-            font-size: 2.5rem;
-            line-height: 1.2;
-            margin-bottom: 1.5rem;
-            color: var(--primary);
-        }
-
-        .hero-content p {
-            font-size: 1.1rem;
-            margin-bottom: 2rem;
-            color: var(--text-light);
-            line-height: 1.6;
-        }
-
-        .hero-btns {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 0.8rem 1.8rem;
-            border-radius: 4px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-decoration: none;
-            display: inline-block;
-        }
-
-        .btn-primary {
-            background: var(--primary);
-            color: var(--secondary);
-            border: none;
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: var(--primary);
-            border: 2px solid var(--primary);
-        }
-
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 51, 102, 0.3);
-        }
-
-        .btn-primary:hover {
-            background: var(--accent);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(0, 51, 102, 0.1);
-        }
-
-        .hero-visual {
-            position: relative;
-            height: 300px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .floating-card {
-            position: absolute;
-            background: var(--card-bg);
-            border-radius: 8px;
-            padding: 1.5rem;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(0, 51, 102, 0.1);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            width: 250px;
-            transition: transform 0.5s, opacity 0.5s;
-        }
-
-        .card-1 {
-            top: 0;
-            left: 5%;
-            transform: rotate(-5deg);
-        }
-
-        .card-2 {
-            bottom: 0;
-            right: 5%;
-            transform: rotate(5deg);
-        }
-
-        .card-3 {
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(0deg);
-            z-index: 2;
-            width: 280px;
-        }
-
-        .floating-card:hover {
-            transform: translateY(-10px) rotate(0deg);
-            opacity: 1 !important;
-            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
-        }
-
-        .card-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 1rem;
-        }
-
-        .card-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(0, 51, 102, 0.1);
-            color: var(--primary);
-        }
-
-        .card-title {
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--primary);
-        }
-
-        .card-content {
-            color: var(--text-light);
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
-
-        /* Features Section */
-        .features {
-            padding: 4rem 1rem;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .section-title {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            color: var(--primary);
-        }
-
-        .section-subtitle {
-            color: var(--text-light);
-            font-size: 1.1rem;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        .features-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1.5rem;
-        }
-
-        .feature-card {
-            background: var(--card-bg);
-            border-radius: 8px;
-            padding: 1.5rem;
-            border: 1px solid rgba(0, 51, 102, 0.1);
-            transition: transform 0.3s, border-color 0.3s;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
-        }
-
-        .feature-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: var(--primary);
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.5s;
-        }
-
-        .feature-card:hover::before {
-            transform: scaleX(1);
-        }
-
-        .feature-card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(0, 51, 102, 0.3);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .feature-icon {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            color: var(--primary);
-        }
-
-        .feature-title {
-            font-size: 1.3rem;
-            margin-bottom: 1rem;
-            color: var(--primary);
-        }
-
-        .feature-desc {
-            color: var(--text-light);
-            line-height: 1.6;
-            margin-bottom: 1rem;
-        }
-
-        .feature-list {
-            list-style: none;
-        }
-
-        .feature-list li {
-            padding: 0.5rem 0;
-            color: var(--text-light);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .feature-list li::before {
-            content: '✓';
-            color: var(--primary);
-            font-weight: bold;
-        }
-
-        /* Stats Section */
-        .stats {
-            padding: 4rem 1rem;
-            background: rgba(0, 51, 102, 0.05);
-            border-top: 1px solid rgba(0, 51, 102, 0.1);
-            border-bottom: 1px solid rgba(0, 51, 102, 0.1);
-        }
-
-        .stats-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem;
-        }
-
-        .stat-item {
-            text-align: center;
-            padding: 1.5rem;
-        }
-
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-label {
-            color: var(--text-light);
-            font-size: 1rem;
-        }
-
-        /* CTA Section */
-        .cta {
-            padding: 4rem 1rem;
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .cta h2 {
-            font-size: 2rem;
-            margin-bottom: 1.5rem;
-            color: var(--primary);
-        }
-
-        .cta p {
-            color: var(--text-light);
-            font-size: 1.1rem;
-            margin-bottom: 2rem;
-            line-height: 1.6;
-        }
-
-        /* Footer */
-        footer {
-            background: var(--primary);
-            color: var(--secondary);
-            padding: 2rem 1rem 1rem;
-        }
-
-        .footer-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 2rem;
-        }
-
-        .footer-col h3 {
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
-            color: var(--secondary);
-        }
-
-        .footer-links {
-            list-style: none;
-        }
-
-        .footer-links li {
-            margin-bottom: 0.8rem;
-        }
-
-        .footer-links a {
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .footer-links a:hover {
-            color: var(--secondary);
-        }
-
-        .social-links {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .social-links a {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.1);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--secondary);
-            transition: all 0.3s;
-        }
-
-        .social-links a:hover {
-            background: var(--secondary);
-            color: var(--primary);
-            transform: translateY(-3px);
-        }
-
-        .copyright {
-            text-align: center;
-            margin-top: 2rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.2);
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 0.9rem;
-        }
-
-        /* Mobile Menu */
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            color: var(--primary);
-            font-size: 1.5rem;
-            cursor: pointer;
-        }
-
-        /* Responsive Design */
-        @media (min-width: 576px) {
-            header {
-                padding: 0.5rem 1.5rem;
-            }
-            
-            .hero {
-                padding: 9rem 1.5rem 5rem;
-            }
-            
-            .features {
-                padding: 5rem 1.5rem;
-            }
-            
-            .stats {
-                padding: 5rem 1.5rem;
-            }
-            
-            .cta {
-                padding: 5rem 1.5rem;
-            }
-            
-            footer {
-                padding: 3rem 1.5rem 1rem;
-            }
-            
-            .stats-container {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (min-width: 768px) {
-            .hero {
-                grid-template-columns: 1fr 1fr;
-                text-align: left;
-                padding: 10rem 2rem 5rem;
-            }
-            
-            .hero-content {
-                text-align: left;
-            }
-            
-            .hero-btns {
-                justify-content: flex-start;
-            }
-            
-            .features-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .stats-container {
-                grid-template-columns: repeat(4, 1fr);
-            }
-            
-            .footer-container {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .nav-links {
-                display: flex;
-            }
-            
-            .mobile-menu-btn {
-                display: none;
-            }
-        }
-
-        @media (min-width: 992px) {
-            .hero {
-                gap: 4rem;
-            }
-            
-            .hero-content h1 {
-                font-size: 3rem;
-            }
-            
-            .hero-visual {
-                height: 400px;
-            }
-            
-            .floating-card {
-                width: 280px;
-            }
-            
-            .card-3 {
-                width: 320px;
-            }
-            
-            .features-grid {
-                grid-template-columns: repeat(3, 1fr);
-            }
-            
-            .footer-container {
-                grid-template-columns: repeat(4, 1fr);
-            }
-        }
-
-        @media (max-width: 767px) {
-            .nav-links {
-                display: none;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                width: 100%;
-                background: var(--secondary);
-                flex-direction: column;
-                padding: 1rem 0;
-                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
-            }
-
-            .nav-links.active {
-                display: flex;
-            }
-
-            .nav-links li {
-                width: 100%;
-                text-align: center;
-            }
-
-            .nav-links a {
-                display: block;
-                padding: 1rem;
-            }
-
-            .mobile-menu-btn {
-                display: block;
-            }
-            
-            .hero-visual {
-                height: 250px;
-            }
-            
-            .floating-card {
-                width: 200px;
-            }
-            
-            .card-3 {
-                width: 220px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .hero-content h1 {
-                font-size: 2rem;
-            }
-            
-            .section-title {
-                font-size: 1.8rem;
-            }
-            
-            .hero-visual {
-                height: 200px;
-            }
-            
-            .floating-card {
-                width: 160px;
-                padding: 1rem;
-            }
-            
-            .card-3 {
-                width: 180px;
-            }
-            
-            .card-title {
-                font-size: 0.9rem;
-            }
-            
-            .card-content {
-                font-size: 0.8rem;
-            }
-            
-            .btn {
-                padding: 0.7rem 1.5rem;
-                font-size: 0.9rem;
-            }
+            .nav-links a{display:block;padding:1rem;font-weight:500}
+            .hero{padding-top:7rem}
+            .hero h1{font-size:2.2rem}
+            .visual{height:260px}
+            .f-card{width:210px;font-size:.9rem}
+            .f-card:nth-child(3){width:230px}
+        }
+        @media (min-width:768px){
+            .hero{grid-template-columns:1fr 1fr;text-align:left}
+            .hero-content{text-align:left}
+            .hero-btns{justify-content:flex-start}
+            .hero h1{font-size:3rem}
+            .visual{height:380px}
+        }
+        @media (min-width:1024px){
+            .hero h1{font-size:3.4rem}
+            .visual{height:440px}
         }
     </style>
 </head>
 <body>
-    <!-- Background Animation -->
-    <div class="bg-animation">
-        <div class="floating-shape"></div>
-        <div class="floating-shape"></div>
-        <div class="floating-shape"></div>
+    <!-- Background Shapes -->
+    <div class="bg-anim" aria-hidden="true">
+        <div class="shape"></div><div class="shape"></div><div class="shape"></div>
     </div>
 
     <!-- Header -->
     <header>
-        <div class="nav-container">
+        <nav class="nav container" aria-label="Main navigation">
             <div class="logo">
-                <img src="https://www.uniport.edu.ng/wp-content/themes/unipix/assets/images/logo/uniport_logo1.png" alt="UniPort Logo">
-                <div class="logo-text">UniPort Bursary</div>
+                <img src="https://www.uniport.edu.ng/wp-content/themes/unipix/assets/images/logo/uniport_logo1.png" alt="UniPort logo">
+                <span>UniPort Bursary</span>
             </div>
-            
-            <button class="mobile-menu-btn">
+            <button class="menu-btn" aria-label="Toggle menu" aria-expanded="false">
                 <i class="fas fa-bars"></i>
             </button>
-            
             <ul class="nav-links">
                 <li><a href="#home">Home</a></li>
                 <li><a href="#features">Features</a></li>
                 <li><a href="#about">About</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
-            
-            <a href="login.html" class="login-btn">
-                 Login
-            </a>
-        </div>
+            <a href="login.html" class="login-btn">Login</a>
+        </nav>
     </header>
 
-    <!-- Hero Section -->
-    <section class="hero" id="home">
+    <!-- Hero -->
+    <section class="hero container" id="home">
         <div class="hero-content">
             <h1>Next-Generation University Bursary Management</h1>
-            <p>Experience the future of financial administration with our cutting-edge e-authentication system. Secure, efficient, and designed for the digital age.</p>
+            <p>Secure, efficient, and built for the digital age — manage bursaries, scholarships and financial aid with zero friction.</p>
             <div class="hero-btns">
                 <a href="login.html" class="btn btn-primary">Access Portal</a>
                 <a href="#features" class="btn btn-secondary">Learn More</a>
             </div>
         </div>
-        
-        <div class="hero-visual">
-            <div class="floating-card card-1">
-                <div class="card-header">
-                    <div class="card-icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <div class="card-title">Multi-Factor Security</div>
+        <div class="visual" aria-hidden="true">
+            <div class="f-card" style="--r:-6deg">
+                <div class="f-head">
+                    <div class="f-icon"><i class="fas fa-shield-alt"></i></div>
+                    <div class="f-title">Multi-Factor Security</div>
                 </div>
-                <div class="card-content">
-                    Advanced authentication with OTP verification and biometric options.
-                </div>
+                <div class="f-text">OTP + Biometrics with end-to-end encryption.</div>
             </div>
-            
-            <div class="floating-card card-2">
-                <div class="card-header">
-                    <div class="card-icon">
-                        <i class="fas fa-bolt"></i>
-                    </div>
-                    <div class="card-title">Instant Processing</div>
+            <div class="f-card" style="--r:6deg">
+                <div class="f-head">
+                    <div class="f-icon"><i class="fas fa-bolt"></i></div>
+                    <div class="f-title">Instant Processing</div>
                 </div>
-                <div class="card-content">
-                    Real-time application tracking and automated disbursement system.
-                </div>
+                <div class="f-text">Real-time tracking & automated disbursements.</div>
             </div>
-            
-            <div class="floating-card card-3">
-                <div class="card-header">
-                    <div class="card-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <div class="card-title">Smart Analytics</div>
+            <div class="f-card">
+                <div class="f-head">
+                    <div class="f-icon"><i class="fas fa-chart-line"></i></div>
+                    <div class="f-title">Smart Analytics</div>
                 </div>
-                <div class="card-content">
-                    AI-powered insights for financial planning and resource allocation.
-                </div>
+                <div class="f-text">AI insights for budget planning & forecasting.</div>
             </div>
         </div>
     </section>
 
-    <!-- Features Section -->
-    <section class="features" id="features">
-        <div class="section-header">
-            <h2 class="section-title">System Features</h2>
-            <p class="section-subtitle">Comprehensive financial solutions designed for modern educational institutions</p>
+    <!-- Features -->
+    <section class="features container" id="features">
+        <div class="sec-head">
+            <h2 class="sec-title">System Features</h2>
+            <p class="sec-sub">Everything you need to run a modern bursary department — in one platform.</p>
         </div>
-        
-        <div class="features-grid">
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-user-shield"></i>
-                </div>
-                <h3 class="feature-title">Secure Authentication</h3>
-                <p class="feature-desc">Multi-factor authentication system with advanced encryption and biometric verification options.</p>
-                <ul class="feature-list">
-                    <li>One-Time Password (OTP) verification</li>
-                    <li>Biometric authentication support</li>
+        <div class="grid">
+            <article class="card">
+                <i class="fas fa-user-shield c-icon"></i>
+                <h3 class="c-title">Secure Authentication</h3>
+                <p class="c-desc">Military-grade MFA with biometric fallback.</p>
+                <ul class="c-list">
+                    <li>One-Time Password (OTP)</li>
+                    <li>Biometric login</li>
                     <li>End-to-end encryption</li>
-                    <li>Real-time security monitoring</li>
+                    <li>Real-time threat monitoring</li>
                 </ul>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-money-check-alt"></i>
-                </div>
-                <h3 class="feature-title">Bursary Management</h3>
-                <p class="feature-desc">Complete digital management of student bursaries, scholarships, and financial aid programs.</p>
-                <ul class="feature-list">
-                    <li>Automated application processing</li>
-                    <li>Real-time disbursement tracking</li>
-                    <li>Customizable eligibility criteria</li>
-                    <li>Comprehensive reporting tools</li>
+            </article>
+            <article class="card">
+                <i class="fas fa-money-check-alt c-icon"></i>
+                <h3 class="c-title">Bursary Management</h3>
+                <p class="c-desc">From application to payout — fully digital.</p>
+                <ul class="c-list">
+                    <li>Auto eligibility checks</li>
+                    <li>Instant disbursement</li>
+                    <li>Custom workflows</li>
+                    <li>Audit-ready reports</li>
                 </ul>
-            </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">
-                    <i class="fas fa-chart-pie"></i>
-                </div>
-                <h3 class="feature-title">Financial Analytics</h3>
-                <p class="feature-desc">AI-powered insights and predictive analytics for optimal resource allocation and planning.</p>
-                <ul class="feature-list">
-                    <li>Predictive financial modeling</li>
-                    <li>Automated budget optimization</li>
+            </article>
+            <article class="card">
+                <i class="fas fa-chart-pie c-icon"></i>
+                <h3 class="c-title">Financial Analytics</h3>
+                <p class="c-desc">Predict, plan and optimize with AI.</p>
+                <ul class="c-list">
+                    <li>Predictive budgeting</li>
                     <li>Interactive dashboards</li>
-                    <li>Custom report generation</li>
+                    <li>Exportable insights</li>
+                    <li>Scenario modeling</li>
                 </ul>
+            </article>
+        </div>
+    </section>
+
+    <!-- Stats -->
+    <section class="stats container">
+        <div class="stats-grid">
+            <div>
+                <div class="stat-num">15,000+</div>
+                <div class="stat-lab">Students Served</div>
+            </div>
+            <div>
+                <div class="stat-num">₦2.5B+</div>
+                <div class="stat-lab">Funds Disbursed</div>
+            </div>
+            <div>
+                <div class="stat-num">99.8%</div>
+                <div class="stat-lab">System Uptime</div>
+            </div>
+            <div>
+                <div class="stat-num">4.9/5</div>
+                <div class="stat-lab">User Satisfaction</div>
             </div>
         </div>
     </section>
 
-    <!-- Stats Section -->
-    <section class="stats">
-        <div class="stats-container">
-            <div class="stat-item">
-                <div class="stat-number">15,000+</div>
-                <div class="stat-label">Students Served</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number">₦2.5B+</div>
-                <div class="stat-label">Funds Disbursed</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number">99.8%</div>
-                <div class="stat-label">System Uptime</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number">4.9/5</div>
-                <div class="stat-label">User Satisfaction</div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="cta">
-        <h2>Ready to Experience the Future?</h2>
-        <p>Join thousands of students and administrators who have transformed their financial management with our next-generation platform.</p>
+    <!-- CTA -->
+    <section class="cta container">
+        <h2>Ready to Transform Financial Aid?</h2>
+        <p>Join thousands who already manage bursaries faster, safer and smarter.</p>
         <a href="login.html" class="btn btn-primary">Access Student Portal</a>
     </section>
 
     <!-- Footer -->
     <footer>
-        <div class="footer-container">
-            <div class="footer-col">
+        <div class="foot-grid container">
+            <div class="f-col">
                 <h3>UniPort Bursary</h3>
-                <p style="color: rgba(255, 255, 255, 0.8); line-height: 1.6;">Revolutionizing university financial management through cutting-edge technology and secure authentication systems.</p>
-                <div class="social-links">
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                <p>Revolutionizing university financial management with secure, digital-first solutions.</p>
+                <div class="social">
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
                 </div>
             </div>
-            
-            <div class="footer-col">
+            <div class="f-col">
                 <h3>Quick Links</h3>
-                <ul class="footer-links">
+                <ul class="f-links">
                     <li><a href="#home">Home</a></li>
                     <li><a href="#features">Features</a></li>
                     <li><a href="#about">About Us</a></li>
                     <li><a href="#contact">Contact</a></li>
                 </ul>
             </div>
-            
-            <div class="footer-col">
+            <div class="f-col">
                 <h3>Services</h3>
-                <ul class="footer-links">
+                <ul class="f-links">
                     <li><a href="#">Student Portal</a></li>
                     <li><a href="#">Bursary Applications</a></li>
                     <li><a href="#">Financial Aid</a></li>
                     <li><a href="#">Scholarships</a></li>
                 </ul>
             </div>
-            
-            <div class="footer-col">
+            <div class="f-col">
                 <h3>Contact Info</h3>
-                <ul class="footer-links">
+                <ul class="f-links">
                     <li><i class="fas fa-map-marker-alt"></i> University of Port Harcourt</li>
-                    <li><i class="fas fa-phone"></i> +234 (0) 812 345 6789</li>
+                    <li><i class="fas fa-phone"></i> +234 812 345 6789</li>
                     <li><i class="fas fa-envelope"></i> bursary@uniport.edu.ng</li>
-                    <li><i class="fas fa-clock"></i> Mon - Fri: 8:00AM - 4:00PM</li>
+                    <li><i class="fas fa-clock"></i> Mon–Fri 8AM–4PM</li>
                 </ul>
             </div>
         </div>
-        
-        <div class="copyright">
-            &copy; 2025 University of Port Harcourt Bursary Department. All Rights Reserved.
+        <div class="copy">
+            © 2025 University of Port Harcourt Bursary Department. All Rights Reserved.
         </div>
     </footer>
 
     <script>
-        // Floating cards animation
-        document.addEventListener('DOMContentLoaded', function() {
-            const cards = document.querySelectorAll('.floating-card');
-            
-            cards.forEach((card, index) => {
-                // Set initial random positions for animation
-                card.style.animationDelay = `${index * 0.5}s`;
-                
-                // Add hover effect
-                card.addEventListener('mouseenter', function() {
-                    cards.forEach(otherCard => {
-                        if (otherCard !== card) {
-                            otherCard.style.opacity = '0.7';
-                            otherCard.style.transform = 'scale(0.95)';
-                        }
-                    });
-                });
-                
-                card.addEventListener('mouseleave', function() {
-                    cards.forEach(otherCard => {
-                        if (otherCard !== card) {
-                            otherCard.style.opacity = '1';
-                            otherCard.style.transform = '';
-                        }
-                    });
-                });
-            });
-            
-            // Smooth scrolling for anchor links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    const targetId = this.getAttribute('href');
-                    if (targetId === '#') return;
-                    
-                    const targetElement = document.querySelector(targetId);
-                    if (targetElement) {
-                        window.scrollTo({
-                            top: targetElement.offsetTop - 80,
-                            behavior: 'smooth'
-                        });
-                    }
-                });
-            });
-            
-            // Mobile menu toggle
-            const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-            const navLinks = document.querySelector('.nav-links');
-            
-            mobileMenuBtn.addEventListener('click', function() {
-                navLinks.classList.toggle('active');
+        // Mobile menu
+        const btn = document.querySelector('.menu-btn');
+        const nav = document.querySelector('.nav-links');
+        btn.addEventListener('click', () => {
+            const expanded = btn.getAttribute('aria-expanded') === 'true';
+            btn.setAttribute('aria-expanded', !expanded);
+            btn.innerHTML = expanded ? '<i class="fas fa-bars"></i>' : '<i class="fas fa-times"></i>';
+            nav.classList.toggle('active');
+        });
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(a => {
+            a.addEventListener('click', e => {
+                const id = a.getAttribute('href');
+                if (id === '#') return;
+                e.preventDefault();
+                document.querySelector(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                if (nav.classList.contains('active')) {
+                    nav.classList.remove('active');
+                    btn.setAttribute('aria-expanded', 'false');
+                    btn.innerHTML = '<i class="fas fa-bars"></i>';
+                }
             });
         });
+
+        // Floating cards entrance
+        const observer = new IntersectionObserver(entries => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0) rotate(var(--r,0deg))';
+                }
+            });
+        }, { threshold: 0.3 });
+        document.querySelectorAll('.f-card').forEach(c => observer.observe(c));
     </script>
 </body>
 </html>
